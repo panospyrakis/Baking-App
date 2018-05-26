@@ -1,4 +1,4 @@
-package com.udacity.spyrakis.bakingapp;
+package com.udacity.spyrakis.bakingapp.fragments;
 
 import android.app.Activity;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -9,6 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.udacity.spyrakis.bakingapp.R;
+import com.udacity.spyrakis.bakingapp.activities.RecipeDetailActivity;
+import com.udacity.spyrakis.bakingapp.activities.RecipeListActivity;
 import com.udacity.spyrakis.bakingapp.dummy.DummyContent;
 
 /**

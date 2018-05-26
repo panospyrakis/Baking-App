@@ -49,8 +49,8 @@ public class SimpleRecipeRecyclerViewAdapter
     };
 
     public SimpleRecipeRecyclerViewAdapter(RecipeListActivity parent,
-                                    List<DummyContent.DummyItem> items,
-                                    boolean twoPane) {
+                                           List<DummyContent.DummyItem> items,
+                                           boolean twoPane) {
         mValues = items;
         mParentActivity = parent;
         mTwoPane = twoPane;

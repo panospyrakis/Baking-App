@@ -3,6 +3,7 @@ package com.udacity.spyrakis.bakingapp.activities;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
@@ -35,11 +36,17 @@ public class RecipeListActivity extends AppCompatActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.fab)
-    Toolbar fab;
 
-    @Nullable @BindView(R.id.recipe_detail_container)
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
+
+    @BindView(R.id.recipe_list)
+    View recyclerView;
+
+    @Nullable
+    @BindView(R.id.recipe_detail_container)
     NestedScrollView recipeDetailContainer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +73,6 @@ public class RecipeListActivity extends AppCompatActivity {
             mTwoPane = true;
         }
 
-        View recyclerView = findViewById(R.id.recipe_list);
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
     }

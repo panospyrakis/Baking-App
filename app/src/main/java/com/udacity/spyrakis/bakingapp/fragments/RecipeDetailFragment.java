@@ -1,8 +1,8 @@
 package com.udacity.spyrakis.bakingapp.fragments;
 
 import android.app.Activity;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +13,9 @@ import com.udacity.spyrakis.bakingapp.R;
 import com.udacity.spyrakis.bakingapp.activities.RecipeDetailActivity;
 import com.udacity.spyrakis.bakingapp.activities.RecipeListActivity;
 import com.udacity.spyrakis.bakingapp.dummy.DummyContent;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * A fragment representing a single Recipe detail screen.
@@ -57,14 +60,18 @@ public class RecipeDetailFragment extends Fragment {
         }
     }
 
+    @BindView(R.id.recipe_detail)
+    TextView recipeText;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.recipe_detail, container, false);
+        ButterKnife.bind(this, rootView);
 
         // Show the dummy content as text in a TextView.
         if (mItem != null) {
-            ((TextView) rootView.findViewById(R.id.recipe_detail)).setText(mItem.details);
+            recipeText.setText(mItem.details);
         }
 
         return rootView;

@@ -24,6 +24,7 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         isActive = true;
     }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -31,10 +32,11 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         isActive = true;
     }
+
     @Override
     public void onStop() {
         super.onStop();

@@ -43,7 +43,7 @@ public class RecipeDetailFragment extends Fragment {
     public static RecipeDetailFragment newInstance(Recipe item) {
 
         Bundle args = new Bundle();
-        args.putParcelable(ARG_ITEM,item);
+        args.putParcelable(ARG_ITEM, item);
         RecipeDetailFragment fragment = new RecipeDetailFragment();
         fragment.setArguments(args);
         return fragment;

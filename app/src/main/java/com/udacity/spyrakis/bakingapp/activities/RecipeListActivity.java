@@ -4,8 +4,6 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -43,9 +41,6 @@ public class RecipeListActivity extends BaseActivity {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
-    @BindView(R.id.fab)
-    FloatingActionButton fab;
-
     @BindView(R.id.recipe_list)
     View recyclerView;
 
@@ -55,6 +50,7 @@ public class RecipeListActivity extends BaseActivity {
     ProgressDialog progress;
 
     List<Recipe> recipeList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,14 +60,6 @@ public class RecipeListActivity extends BaseActivity {
         setSupportActionBar(toolbar);
 
         toolbar.setTitle(getTitle());
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         if (recipeDetailContainer != null) {
             // The detail container view will be present only in the
@@ -88,7 +76,7 @@ public class RecipeListActivity extends BaseActivity {
 
     @Override
     public void onStart() {
-        if (progress != null && progress.isShowing()){
+        if (progress != null && progress.isShowing()) {
             progress.dismiss();
         }
         super.onStart();
@@ -118,7 +106,7 @@ public class RecipeListActivity extends BaseActivity {
             @Override
             public void onFailure(Call<List<Recipe>> call, Throwable t) {
                 progress.dismiss();
-                Log.d("call fail","call failed",t);
+                Log.d("call fail", "call failed", t);
 
             }
         });

@@ -2,13 +2,10 @@ package com.udacity.spyrakis.bakingapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.udacity.spyrakis.bakingapp.R;
 import com.udacity.spyrakis.bakingapp.fragments.RecipeDetailFragment;
@@ -27,8 +24,6 @@ public class RecipeDetailActivity extends BaseActivity {
 
     @BindView(R.id.detail_toolbar)
     Toolbar toolbar;
-    @BindView(R.id.fab)
-    FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,14 +31,6 @@ public class RecipeDetailActivity extends BaseActivity {
         setContentView(R.layout.activity_recipe_detail);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         // Show the Up button in the action bar.
         ActionBar actionBar = getSupportActionBar();
@@ -54,7 +41,7 @@ public class RecipeDetailActivity extends BaseActivity {
         if (savedInstanceState == null) {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
-            RecipeDetailFragment fragment = RecipeDetailFragment.newInstance((Recipe)getIntent().getParcelableExtra(RecipeDetailFragment.ARG_ITEM_ID));
+            RecipeDetailFragment fragment = RecipeDetailFragment.newInstance((Recipe) getIntent().getParcelableExtra(RecipeDetailFragment.ARG_ITEM_ID));
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.recipe_detail_container, fragment)
                     .commit();

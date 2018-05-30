@@ -9,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 
 import com.udacity.spyrakis.bakingapp.R;
@@ -117,6 +118,7 @@ public class RecipeListActivity extends BaseActivity {
             @Override
             public void onFailure(Call<List<Recipe>> call, Throwable t) {
                 progress.dismiss();
+                Log.d("call fail","call failed",t);
 
             }
         });

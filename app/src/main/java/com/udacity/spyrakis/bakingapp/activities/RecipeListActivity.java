@@ -1,22 +1,27 @@
 package com.udacity.spyrakis.bakingapp.activities;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.NestedScrollView;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.udacity.spyrakis.bakingapp.R;
 import com.udacity.spyrakis.bakingapp.adapters.SimpleRecipeRecyclerViewAdapter;
-import com.udacity.spyrakis.bakingapp.dummy.DummyContent;
+import com.udacity.spyrakis.bakingapp.models.Recipe;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * An activity representing a list of Recipies. This activity
@@ -26,7 +31,7 @@ import butterknife.ButterKnife;
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  */
-public class RecipeListActivity extends AppCompatActivity {
+public class RecipeListActivity extends BaseActivity {
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -46,7 +51,9 @@ public class RecipeListActivity extends AppCompatActivity {
     @Nullable
     @BindView(R.id.recipe_detail_container)
     NestedScrollView recipeDetailContainer;
+    ProgressDialog progress;
 
+    List<Recipe> recipeList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,11 +81,49 @@ public class RecipeListActivity extends AppCompatActivity {
         }
 
         assert recyclerView != null;
-        setupRecyclerView((RecyclerView) recyclerView);
+        setUpNetworkCalls();
+        makeSomeCalls();
+    }
+
+    @Override
+    public void onStart() {
+        if (progress != null && progress.isShowing()){
+            progress.dismiss();
+        }
+        super.onStart();
+    }
+
+    private void makeSomeCalls() {
+        progress = new ProgressDialog(this);
+        progress.setTitle(getApplicationContext().getString(R.string.loading));
+        progress.setMessage(getApplicationContext().getString(R.string.wait));
+        progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
+        progress.show();
+
+        Call<List<Recipe>> listCall = service.getRecipies();
+
+
+        listCall.enqueue(new Callback<List<Recipe>>() {
+            @Override
+            public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
+
+                if (!isActive) return;
+
+                recipeList = response.body();
+                setupRecyclerView((RecyclerView) recyclerView);
+                progress.dismiss();
+            }
+
+            @Override
+            public void onFailure(Call<List<Recipe>> call, Throwable t) {
+                progress.dismiss();
+
+            }
+        });
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleRecipeRecyclerViewAdapter(this, DummyContent.ITEMS, mTwoPane));
+        recyclerView.setAdapter(new SimpleRecipeRecyclerViewAdapter(this, recipeList, mTwoPane));
     }
 
 

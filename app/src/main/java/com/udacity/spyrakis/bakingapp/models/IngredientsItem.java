@@ -50,6 +50,10 @@ public class IngredientsItem implements Parcelable {
                         "}";
     }
 
+    public String toDisplayString() {
+        return ingredient + ": " + quantity + measure;
+    }
+
     @Override
     public int describeContents() {
         return 0;

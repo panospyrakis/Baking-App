@@ -107,7 +107,6 @@ public class RecipeListActivity extends BaseActivity {
             public void onFailure(Call<List<Recipe>> call, Throwable t) {
                 progress.dismiss();
                 Log.d("call fail", "call failed", t);
-
             }
         });
     }

@@ -41,7 +41,7 @@ public class RecipeDetailActivity extends BaseActivity {
         if (savedInstanceState == null) {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
-            RecipeDetailFragment fragment = RecipeDetailFragment.newInstance((Recipe) getIntent().getParcelableExtra(RecipeDetailFragment.ARG_ITEM_ID));
+            RecipeDetailFragment fragment = RecipeDetailFragment.newInstance((Recipe) getIntent().getParcelableExtra(RecipeDetailFragment.ARG_ITEM),false);
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.recipe_detail_container, fragment)
                     .commit();

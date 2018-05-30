@@ -31,7 +31,7 @@ public class SimpleRecipeRecyclerViewAdapter
             Recipe item = (Recipe) view.getTag();
             if (mTwoPane) {
 
-                RecipeDetailFragment fragment = RecipeDetailFragment.newInstance(item);
+                RecipeDetailFragment fragment = RecipeDetailFragment.newInstance(item,mTwoPane);
 
                 mParentActivity.getSupportFragmentManager().beginTransaction()
                         .replace(R.id.recipe_detail_container, fragment)
@@ -39,7 +39,7 @@ public class SimpleRecipeRecyclerViewAdapter
             } else {
                 Context context = view.getContext();
                 Intent intent = new Intent(context, RecipeDetailActivity.class);
-                intent.putExtra(RecipeDetailFragment.ARG_ITEM_ID, item);
+                intent.putExtra(RecipeDetailFragment.ARG_ITEM, item);
 
                 context.startActivity(intent);
             }
@@ -63,7 +63,6 @@ public class SimpleRecipeRecyclerViewAdapter
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mIdView.setText(mValues.get(position).getId() + "");
         holder.mContentView.setText(mValues.get(position).getName());
 
         holder.itemView.setTag(mValues.get(position));
@@ -76,12 +75,10 @@ public class SimpleRecipeRecyclerViewAdapter
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        final TextView mIdView;
         final TextView mContentView;
 
         ViewHolder(View view) {
             super(view);
-            mIdView = (TextView) view.findViewById(R.id.id_text);
             mContentView = (TextView) view.findViewById(R.id.content);
         }
     }

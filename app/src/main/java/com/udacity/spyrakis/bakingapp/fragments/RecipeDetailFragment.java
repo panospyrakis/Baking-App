@@ -4,14 +4,16 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.udacity.spyrakis.bakingapp.R;
 import com.udacity.spyrakis.bakingapp.activities.RecipeDetailActivity;
 import com.udacity.spyrakis.bakingapp.activities.RecipeListActivity;
+import com.udacity.spyrakis.bakingapp.adapters.RecipeIngredientsAdapter;
 import com.udacity.spyrakis.bakingapp.models.Recipe;
 
 import butterknife.BindView;
@@ -28,10 +30,11 @@ public class RecipeDetailFragment extends Fragment {
      * The fragment argument representing the item ID that this fragment
      * represents.
      */
-    public static final String ARG_ITEM_ID = "item_id";
+    public static final String ARG_TWO_PANE = "ARG_TWO_PANE";
     public static final String ARG_ITEM = "ARG_ITEM";
 
     private Recipe mItem;
+    private Boolean mTwoPane;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -40,10 +43,11 @@ public class RecipeDetailFragment extends Fragment {
     public RecipeDetailFragment() {
     }
 
-    public static RecipeDetailFragment newInstance(Recipe item) {
+    public static RecipeDetailFragment newInstance(Recipe item,Boolean twoPane) {
 
         Bundle args = new Bundle();
         args.putParcelable(ARG_ITEM, item);
+        args.putBoolean(ARG_TWO_PANE, twoPane);
         RecipeDetailFragment fragment = new RecipeDetailFragment();
         fragment.setArguments(args);
         return fragment;
@@ -58,6 +62,7 @@ public class RecipeDetailFragment extends Fragment {
             // arguments. In a real-world scenario, use a Loader
             // to load content from a content provider.
             mItem = getArguments().getParcelable(ARG_ITEM);
+            mTwoPane = getArguments().getBoolean(ARG_TWO_PANE);
 
             Activity activity = this.getActivity();
             CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
@@ -67,8 +72,8 @@ public class RecipeDetailFragment extends Fragment {
         }
     }
 
-    @BindView(R.id.recipe_detail)
-    TextView recipeText;
+    @BindView(R.id.recipe_ingedients_list)
+    RecyclerView recipeList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -78,7 +83,8 @@ public class RecipeDetailFragment extends Fragment {
 
         // Show the dummy content as text in a TextView.
         if (mItem != null) {
-            recipeText.setText(mItem.getName());
+            recipeList.setLayoutManager(new LinearLayoutManager(getContext()));
+            recipeList.setAdapter(new RecipeIngredientsAdapter(mItem,mTwoPane));
         }
 
         return rootView;

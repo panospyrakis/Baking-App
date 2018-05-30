@@ -60,6 +60,15 @@ public class Recipe implements Parcelable {
         return ingredients;
     }
 
+    public String getIngredientsAsString(){
+        StringBuilder stringToReturn = new StringBuilder();
+
+        for (IngredientsItem item: ingredients){
+            stringToReturn.append("\n").append(item.toDisplayString());
+        }
+        return stringToReturn.toString();
+    }
+
     public void setId(int id) {
         this.id = id;
     }

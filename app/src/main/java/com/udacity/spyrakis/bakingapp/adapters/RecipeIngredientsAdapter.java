@@ -1,5 +1,7 @@
 package com.udacity.spyrakis.bakingapp.adapters;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.udacity.spyrakis.bakingapp.R;
+import com.udacity.spyrakis.bakingapp.activities.DetailsActivity;
 import com.udacity.spyrakis.bakingapp.models.IngredientsItem;
 import com.udacity.spyrakis.bakingapp.models.Recipe;
 
@@ -27,7 +30,10 @@ public class RecipeIngredientsAdapter extends RecyclerView.Adapter<RecipeIngredi
             if (mTwoPane) {
 
             } else {
+                Context context = view.getContext();
+                Intent intent = new Intent(context, DetailsActivity.class);
 
+                context.startActivity(intent);
             }
         }
     };

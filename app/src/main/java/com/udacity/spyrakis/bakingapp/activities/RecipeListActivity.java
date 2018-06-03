@@ -1,6 +1,8 @@
 package com.udacity.spyrakis.bakingapp.activities;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,7 +14,9 @@ import android.view.View;
 
 import com.udacity.spyrakis.bakingapp.R;
 import com.udacity.spyrakis.bakingapp.adapters.SimpleRecipeRecyclerViewAdapter;
+import com.udacity.spyrakis.bakingapp.fragments.RecipeDetailFragment;
 import com.udacity.spyrakis.bakingapp.models.Recipe;
+import com.udacity.spyrakis.bakingapp.services.OnItemClickListener;
 
 import java.util.List;
 
@@ -112,7 +116,27 @@ public class RecipeListActivity extends BaseActivity {
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleRecipeRecyclerViewAdapter(this, recipeList, mTwoPane));
+        OnItemClickListener listener = new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view,Recipe item) {
+                if (mTwoPane) {
+
+                    RecipeDetailFragment fragment = RecipeDetailFragment.newInstance(item,mTwoPane);
+
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.recipe_detail_container, fragment)
+                            .commit();
+                } else {
+                    Context context = view.getContext();
+                    Intent intent = new Intent(context, RecipeDetailActivity.class);
+                    intent.putExtra(RecipeDetailFragment.ARG_ITEM, item);
+
+                    startActivity(intent);
+                }
+            }
+        };
+
+        recyclerView.setAdapter(new SimpleRecipeRecyclerViewAdapter(recipeList,listener,mTwoPane));
     }
 
 

@@ -1,8 +1,6 @@
 package com.udacity.spyrakis.bakingapp.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -25,6 +23,7 @@ public class RecipeDetailActivity extends BaseActivity {
     @BindView(R.id.detail_toolbar)
     Toolbar toolbar;
 
+    Recipe recipe;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,25 +40,33 @@ public class RecipeDetailActivity extends BaseActivity {
         if (savedInstanceState == null) {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
-            RecipeDetailFragment fragment = RecipeDetailFragment.newInstance((Recipe) getIntent().getParcelableExtra(RecipeDetailFragment.ARG_ITEM),false);
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.recipe_detail_container, fragment)
-                    .commit();
+            recipe = getIntent().getParcelableExtra(RecipeDetailFragment.ARG_ITEM);
+        }else{
+            recipe = savedInstanceState.getParcelable(RecipeDetailFragment.ARG_ITEM);
         }
+        RecipeDetailFragment fragment = RecipeDetailFragment.newInstance(recipe,false);
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.recipe_detail_container, fragment)
+                .commit();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable(RecipeDetailFragment.ARG_ITEM,recipe);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        recipe = savedInstanceState.getParcelable(RecipeDetailFragment.ARG_ITEM);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            // This ID represents the Home or Up button. In the case of this
-            // activity, the Up button is shown. Use NavUtils to allow users
-            // to navigate up one level in the application structure. For
-            // more details, see the Navigation pattern on Android Design:
-            //
-            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
-            //
-            NavUtils.navigateUpTo(this, new Intent(this, RecipeListActivity.class));
+            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);

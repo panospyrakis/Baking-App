@@ -30,8 +30,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.udacity.spyrakis.bakingapp.activities.RecipeListActivity" />
         </activity>
-        <activity android:name=".activities.BaseActivity" />
-        <activity android:name=".activities.DetailsActivity"></activity>
+        <activity
+            android:name=".activities.DetailsActivity"
+            android:parentActivityName=".activities.RecipeDetailActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.udacity.spyrakis.bakingapp.activities.RecipeDetailActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -1,7 +1,5 @@
 package com.udacity.spyrakis.bakingapp.adapters;
 
-import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,10 +7,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.udacity.spyrakis.bakingapp.R;
-import com.udacity.spyrakis.bakingapp.activities.RecipeDetailActivity;
-import com.udacity.spyrakis.bakingapp.activities.RecipeListActivity;
-import com.udacity.spyrakis.bakingapp.fragments.RecipeDetailFragment;
 import com.udacity.spyrakis.bakingapp.models.Recipe;
+import com.udacity.spyrakis.bakingapp.services.OnItemClickListener;
 
 import java.util.List;
 
@@ -22,36 +18,17 @@ import java.util.List;
 public class SimpleRecipeRecyclerViewAdapter
         extends RecyclerView.Adapter<SimpleRecipeRecyclerViewAdapter.ViewHolder> {
 
-    private final RecipeListActivity mParentActivity;
     private final List<Recipe> mValues;
+
     private final boolean mTwoPane;
-    private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            Recipe item = (Recipe) view.getTag();
-            if (mTwoPane) {
+    private final OnItemClickListener mOnClickListener;
 
-                RecipeDetailFragment fragment = RecipeDetailFragment.newInstance(item,mTwoPane);
-
-                mParentActivity.getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.recipe_detail_container, fragment)
-                        .commit();
-            } else {
-                Context context = view.getContext();
-                Intent intent = new Intent(context, RecipeDetailActivity.class);
-                intent.putExtra(RecipeDetailFragment.ARG_ITEM, item);
-
-                context.startActivity(intent);
-            }
-        }
-    };
-
-    public SimpleRecipeRecyclerViewAdapter(RecipeListActivity parent,
-                                           List<Recipe> items,
+    public SimpleRecipeRecyclerViewAdapter(List<Recipe> items,
+                                           OnItemClickListener list,
                                            boolean twoPane) {
         mValues = items;
-        mParentActivity = parent;
         mTwoPane = twoPane;
+        mOnClickListener = list;
     }
 
     @Override
@@ -66,7 +43,12 @@ public class SimpleRecipeRecyclerViewAdapter
         holder.mContentView.setText(mValues.get(position).getName());
 
         holder.itemView.setTag(mValues.get(position));
-        holder.itemView.setOnClickListener(mOnClickListener);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOnClickListener.onItemClick(v,(Recipe) v.getTag());
+            }
+        });
     }
 
     @Override

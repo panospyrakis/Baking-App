@@ -1,12 +1,15 @@
 package com.udacity.spyrakis.bakingapp.activities;
 
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.exoplayer2.C;
@@ -62,6 +65,12 @@ public class DetailsActivity extends BaseActivity {
     @BindView(R.id.previous_button)
     Button previousButton;
 
+    @BindView(R.id.nav_container)
+    FrameLayout navContainer;
+
+    @BindView(R.id.root)
+    LinearLayout root;
+
     private SimpleExoPlayer player;
     private ArrayList<StepsItem> steps;
     private StepsItem step;
@@ -116,6 +125,17 @@ public class DetailsActivity extends BaseActivity {
         bandwidthMeter = new DefaultBandwidthMeter();
         mediaDataSourceFactory = new DefaultDataSourceFactory(this, Util.getUserAgent(this, "mediaPlayerSample"), (TransferListener<? super DataSource>) bandwidthMeter);
         window = new Timeline.Window();
+
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            navContainer.setVisibility(View.GONE);
+            recipeInstructions.setVisibility(View.GONE);
+            actionBar.hide();
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) simpleExoPlayerView.getLayoutParams();
+            FrameLayout.LayoutParams rootParams = (FrameLayout.LayoutParams) root.getLayoutParams();
+            params.height =  rootParams.height;
+            simpleExoPlayerView.setLayoutParams(params);
+
+        }
 
     }
 

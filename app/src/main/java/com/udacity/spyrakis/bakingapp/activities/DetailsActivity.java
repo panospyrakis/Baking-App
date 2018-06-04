@@ -89,9 +89,14 @@ public class DetailsActivity extends BaseActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+        if (savedInstanceState == null){
+            position = getIntent().getIntExtra(ARG_POSITION,0);
+            steps = getIntent().getParcelableArrayListExtra(ARG_STEPS);
+        }else{
+            position = savedInstanceState.getInt(ARG_POSITION);
+            steps = savedInstanceState.getParcelableArrayList(ARG_STEPS);
+        }
 
-        position = getIntent().getIntExtra(ARG_POSITION,0);
-        steps = getIntent().getParcelableArrayListExtra(ARG_STEPS);
         setContent();
 
         nextButton.setOnClickListener(new View.OnClickListener() {
@@ -237,6 +242,8 @@ public class DetailsActivity extends BaseActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putLong(SELECTED_POSITION, player.getCurrentPosition());
+        outState.putInt(ARG_POSITION,position);
+        outState.putParcelableArrayList(ARG_STEPS,steps);
         super.onSaveInstanceState(outState);
     }
 

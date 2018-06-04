@@ -41,13 +41,18 @@ public class RecipeDetailActivity extends BaseActivity {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             recipe = getIntent().getParcelableExtra(RecipeDetailFragment.ARG_ITEM);
+            RecipeDetailFragment fragment = RecipeDetailFragment.newInstance(recipe,false);
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.recipe_detail_container, fragment)
+                    .commit();
         }else{
             recipe = savedInstanceState.getParcelable(RecipeDetailFragment.ARG_ITEM);
+            RecipeDetailFragment fragment = RecipeDetailFragment.newInstance(recipe,false);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.recipe_detail_container, fragment)
+                    .commit();
         }
-        RecipeDetailFragment fragment = RecipeDetailFragment.newInstance(recipe,false);
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.recipe_detail_container, fragment)
-                .commit();
+
     }
 
     @Override

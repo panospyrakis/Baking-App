@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
@@ -43,6 +44,7 @@ public class DetailsActivity extends BaseActivity {
     private BandwidthMeter bandwidthMeter;
     public static final String ARG_STEPS = "ARG_STEPS";
     public static final String ARG_POSITION = "ARG_POSITION";
+    public static final String SELECTED_POSITION = "SELECTED_POSITION";
 
 
     @BindView(R.id.exo_cntlr)
@@ -65,6 +67,7 @@ public class DetailsActivity extends BaseActivity {
     private StepsItem step;
     private String url;
     private int position;
+    private long videoPosition = C.TIME_UNSET;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -182,6 +185,7 @@ public class DetailsActivity extends BaseActivity {
         super.onStart();
         if (Util.SDK_INT > 23) {
             initializePlayer();
+            if (videoPosition != C.TIME_UNSET) player.seekTo(videoPosition);
         }
     }
 
@@ -190,6 +194,7 @@ public class DetailsActivity extends BaseActivity {
         super.onResume();
         if ((Util.SDK_INT <= 23 || player == null)) {
             initializePlayer();
+            if (videoPosition != C.TIME_UNSET) player.seekTo(videoPosition);
         }
     }
 
@@ -207,6 +212,19 @@ public class DetailsActivity extends BaseActivity {
         if (Util.SDK_INT > 23) {
             releasePlayer();
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putLong(SELECTED_POSITION, player.getCurrentPosition());
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        videoPosition = savedInstanceState.getLong(SELECTED_POSITION);
+        if (player != null) player.seekTo(videoPosition);
     }
 
     @Override

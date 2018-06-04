@@ -18,10 +18,12 @@ public class BaseActivity extends AppCompatActivity {
 
     BakingAppApiService service;
     boolean isActive = false;
+    boolean mTwoPane = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mTwoPane = getResources().getBoolean(R.bool.isTablet);
         isActive = true;
     }
 

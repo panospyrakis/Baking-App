@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.udacity.spyrakis.bakingapp.R;
+import com.udacity.spyrakis.bakingapp.activities.BaseActivity;
 import com.udacity.spyrakis.bakingapp.activities.RecipeDetailActivity;
 import com.udacity.spyrakis.bakingapp.activities.RecipeListActivity;
 import com.udacity.spyrakis.bakingapp.adapters.RecipeIngredientsAdapter;
@@ -81,10 +82,9 @@ public class RecipeDetailFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.recipe_detail, container, false);
         ButterKnife.bind(this, rootView);
 
-        // Show the dummy content as text in a TextView.
         if (mItem != null) {
             recipeList.setLayoutManager(new LinearLayoutManager(getContext()));
-            recipeList.setAdapter(new RecipeIngredientsAdapter(mItem,mTwoPane));
+            recipeList.setAdapter(new RecipeIngredientsAdapter((BaseActivity) getActivity(),mItem,mTwoPane));
         }
 
         return rootView;

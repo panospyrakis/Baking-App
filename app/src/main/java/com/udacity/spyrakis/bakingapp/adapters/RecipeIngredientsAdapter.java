@@ -10,7 +10,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.udacity.spyrakis.bakingapp.R;
+import com.udacity.spyrakis.bakingapp.activities.BaseActivity;
 import com.udacity.spyrakis.bakingapp.activities.DetailsActivity;
+import com.udacity.spyrakis.bakingapp.fragments.DetailsFragment;
 import com.udacity.spyrakis.bakingapp.models.Recipe;
 import com.udacity.spyrakis.bakingapp.models.StepsItem;
 
@@ -23,36 +25,42 @@ public class RecipeIngredientsAdapter extends RecyclerView.Adapter<RecipeIngredi
 
     private Recipe recipe;
     private final boolean mTwoPane;
+    private BaseActivity mParentActivity;
 
     private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             int position =  (int) view.getTag();
+            ArrayList<StepsItem> argumentList = new ArrayList<>(recipe.getSteps());
+
             //play video
             if (mTwoPane) {
-
+                DetailsFragment fragment = DetailsFragment.newInstance(argumentList,position);
+                mParentActivity.getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.step_details_container, fragment)
+                        .commit();
             } else {
                 Context context = view.getContext();
                 Intent intent = new Intent(context, DetailsActivity.class);
-                ArrayList<StepsItem> argumentList = new ArrayList<>(recipe.getSteps());
 
                 intent.putParcelableArrayListExtra(DetailsActivity.ARG_STEPS,argumentList);
                 intent.putExtra(DetailsActivity.ARG_POSITION, position);
-                context.startActivity(intent);
+                mParentActivity.startActivity(intent);
             }
         }
     };
 
-    public RecipeIngredientsAdapter(Recipe item, boolean twoPane) {
+    public RecipeIngredientsAdapter(BaseActivity parentActivity,Recipe item, boolean twoPane) {
         recipe = item;
         mTwoPane = twoPane;
+        mParentActivity = parentActivity;
     }
 
     @NonNull
     @Override
     public RecipeIngredientsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.recipe_list_content, parent, false);
+                .inflate(R.layout.ingredients_list_content, parent, false);
         return new RecipeIngredientsAdapter.ViewHolder(view);
     }
 

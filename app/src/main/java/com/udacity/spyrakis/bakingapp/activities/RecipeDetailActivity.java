@@ -24,6 +24,8 @@ public class RecipeDetailActivity extends BaseActivity {
     Toolbar toolbar;
 
     Recipe recipe;
+    public static final String EXTRA_TWO_PANE = "EXTRA_TWO_PANE";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,15 +43,15 @@ public class RecipeDetailActivity extends BaseActivity {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             recipe = getIntent().getParcelableExtra(RecipeDetailFragment.ARG_ITEM);
-            RecipeDetailFragment fragment = RecipeDetailFragment.newInstance(recipe,false);
+            RecipeDetailFragment fragment = RecipeDetailFragment.newInstance(recipe,mTwoPane);
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.recipe_detail_container, fragment)
+                    .add(R.id.recipe_detail_list, fragment)
                     .commit();
         }else{
             recipe = savedInstanceState.getParcelable(RecipeDetailFragment.ARG_ITEM);
-            RecipeDetailFragment fragment = RecipeDetailFragment.newInstance(recipe,false);
+            RecipeDetailFragment fragment = RecipeDetailFragment.newInstance(recipe,mTwoPane);
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.recipe_detail_container, fragment)
+                    .replace(R.id.recipe_detail_list, fragment)
                     .commit();
         }
 

@@ -46,32 +46,32 @@ public class RecipeDetailActivity extends BaseActivity {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             recipe = getIntent().getParcelableExtra(RecipeDetailFragment.ARG_ITEM);
-            RecipeDetailFragment fragment = RecipeDetailFragment.newInstance(recipe,mTwoPane);
+            RecipeDetailFragment fragment = RecipeDetailFragment.newInstance(recipe, mTwoPane);
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.recipe_detail_list, fragment)
                     .commit();
-        }else{
+        } else {
             recipe = savedInstanceState.getParcelable(RecipeDetailFragment.ARG_ITEM);
-            RecipeDetailFragment fragment = RecipeDetailFragment.newInstance(recipe,mTwoPane);
+            RecipeDetailFragment fragment = RecipeDetailFragment.newInstance(recipe, mTwoPane);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.recipe_detail_list, fragment)
                     .commit();
         }
-
-        getContentResolver().delete(RecipiesContract.RecipeEntry.CONTENT_URI,null,null);
-        for (IngredientsItem item : recipe.getIngredients()){
-            ContentValues itemToAdd = new ContentValues();
-            itemToAdd.put(RecipiesContract.RecipeEntry.TITLE, recipe.getName());
-            itemToAdd.put(RecipiesContract.RecipeEntry.INGREDIENTS, item.toDisplayString());
-            getContentResolver().insert(RecipiesContract.RecipeEntry.CONTENT_URI,itemToAdd);
+        if (recipe != null) {
+            getContentResolver().delete(RecipiesContract.RecipeEntry.CONTENT_URI, null, null);
+            for (IngredientsItem item : recipe.getIngredients()) {
+                ContentValues itemToAdd = new ContentValues();
+                itemToAdd.put(RecipiesContract.RecipeEntry.TITLE, recipe.getName());
+                itemToAdd.put(RecipiesContract.RecipeEntry.INGREDIENTS, item.toDisplayString());
+                getContentResolver().insert(RecipiesContract.RecipeEntry.CONTENT_URI, itemToAdd);
+            }
+            RecipeAppWidgetProvider.sendRefreshBroadcast(getApplicationContext());
         }
-        RecipeAppWidgetProvider.sendRefreshBroadcast(getApplicationContext());
-
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putParcelable(RecipeDetailFragment.ARG_ITEM,recipe);
+        outState.putParcelable(RecipeDetailFragment.ARG_ITEM, recipe);
         super.onSaveInstanceState(outState);
     }
 

@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.udacity.spyrakis.bakingapp.R;
 import com.udacity.spyrakis.bakingapp.adapters.SimpleRecipeRecyclerViewAdapter;
@@ -47,8 +48,8 @@ public class RecipeListActivity extends BaseActivity {
     @BindView(R.id.recipe_list)
     View recyclerView;
 
-//    @BindView(R.id.recipe_detail_container)
-//    FrameLayout recipeDetailContainer;
+    @BindView(R.id.main_title)
+    TextView mainTitle;
 
     ProgressDialog progress;
 
@@ -61,8 +62,6 @@ public class RecipeListActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
-
-        toolbar.setTitle(getTitle());
 
         if (mTwoPane) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);

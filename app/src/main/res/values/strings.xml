@@ -6,5 +6,9 @@
     <string name="wait">Wait while loading…</string>
     <string name="previous">Previous</string>
     <string name="next">Next</string>
+    <string name="appwidget_text">Title</string>
+    <string name="add_widget">Add widget</string>
+    <string name="empty_view_text">Recipe List is Empty</string>
+    <string name="content_authority">com.udacity.spyrakis.bakingapp.app</string>
 
 </resources>

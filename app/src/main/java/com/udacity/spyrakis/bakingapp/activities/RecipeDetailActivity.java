@@ -1,5 +1,6 @@
 package com.udacity.spyrakis.bakingapp.activities;
 
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -7,7 +8,10 @@ import android.view.MenuItem;
 
 import com.udacity.spyrakis.bakingapp.R;
 import com.udacity.spyrakis.bakingapp.fragments.RecipeDetailFragment;
+import com.udacity.spyrakis.bakingapp.models.IngredientsItem;
 import com.udacity.spyrakis.bakingapp.models.Recipe;
+import com.udacity.spyrakis.bakingapp.provider.RecipiesContract;
+import com.udacity.spyrakis.bakingapp.widget.RecipeAppWidgetProvider;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,7 +28,6 @@ public class RecipeDetailActivity extends BaseActivity {
     Toolbar toolbar;
 
     Recipe recipe;
-    public static final String EXTRA_TWO_PANE = "EXTRA_TWO_PANE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +57,15 @@ public class RecipeDetailActivity extends BaseActivity {
                     .replace(R.id.recipe_detail_list, fragment)
                     .commit();
         }
+
+        getContentResolver().delete(RecipiesContract.RecipeEntry.CONTENT_URI,null,null);
+        for (IngredientsItem item : recipe.getIngredients()){
+            ContentValues itemToAdd = new ContentValues();
+            itemToAdd.put(RecipiesContract.RecipeEntry.TITLE, recipe.getName());
+            itemToAdd.put(RecipiesContract.RecipeEntry.INGREDIENTS, item.toDisplayString());
+            getContentResolver().insert(RecipiesContract.RecipeEntry.CONTENT_URI,itemToAdd);
+        }
+        RecipeAppWidgetProvider.sendRefreshBroadcast(getApplicationContext());
 
     }
 

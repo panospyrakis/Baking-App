@@ -3,16 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal">
+
     <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/recipe_ingedients_list"
         android:layout_width="300dp"
         android:layout_height="match_parent"
         tools:context=".fragments.RecipeDetailFragment" />
+
     <FrameLayout
         android:id="@+id/step_details_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </FrameLayout>
+        android:layout_height="match_parent"></FrameLayout>
 
 </LinearLayout>

@@ -13,15 +13,20 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.exoplayer2.C;
+import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.PlaybackParameters;
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DataSource;
@@ -29,6 +34,7 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.TransferListener;
 import com.google.android.exoplayer2.util.Util;
+import com.squareup.picasso.Picasso;
 import com.udacity.spyrakis.bakingapp.R;
 import com.udacity.spyrakis.bakingapp.models.StepsItem;
 
@@ -47,6 +53,7 @@ public class DetailsActivity extends BaseActivity {
     private BandwidthMeter bandwidthMeter;
     public static final String ARG_STEPS = "ARG_STEPS";
     public static final String ARG_POSITION = "ARG_POSITION";
+    public static final String ARG_PLAY_WHEN_READY = "ARG_PLAY_WHEN_READY";
     public static final String SELECTED_POSITION = "SELECTED_POSITION";
 
 
@@ -71,6 +78,9 @@ public class DetailsActivity extends BaseActivity {
     @BindView(R.id.root)
     LinearLayout root;
 
+    @BindView(R.id.thumbnail_image)
+    ImageView thumbnail;
+
     private SimpleExoPlayer player;
     private ArrayList<StepsItem> steps;
     private StepsItem step;
@@ -89,10 +99,10 @@ public class DetailsActivity extends BaseActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        if (savedInstanceState == null){
-            position = getIntent().getIntExtra(ARG_POSITION,0);
+        if (savedInstanceState == null) {
+            position = getIntent().getIntExtra(ARG_POSITION, 0);
             steps = getIntent().getParcelableArrayListExtra(ARG_STEPS);
-        }else{
+        } else {
             position = savedInstanceState.getInt(ARG_POSITION);
             steps = savedInstanceState.getParcelableArrayList(ARG_STEPS);
         }
@@ -131,37 +141,43 @@ public class DetailsActivity extends BaseActivity {
         mediaDataSourceFactory = new DefaultDataSourceFactory(this, Util.getUserAgent(this, "mediaPlayerSample"), (TransferListener<? super DataSource>) bandwidthMeter);
         window = new Timeline.Window();
 
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             navContainer.setVisibility(View.GONE);
             recipeInstructions.setVisibility(View.GONE);
             actionBar.hide();
             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) simpleExoPlayerView.getLayoutParams();
             FrameLayout.LayoutParams rootParams = (FrameLayout.LayoutParams) root.getLayoutParams();
-            params.height =  rootParams.height;
+            params.height = rootParams.height;
             simpleExoPlayerView.setLayoutParams(params);
 
         }
 
     }
 
-    private void setContent(){
+    private void setContent() {
         step = steps.get(position);
         recipeInstructions.setText(step.getDescription());
         url = step.getVideoURL();
+        String thumbnailUrl = step.getThumbnailURL();
+        if (thumbnailUrl != null && !thumbnailUrl.equals("")) {
+            Picasso.get().load(step.getThumbnailURL()).into(thumbnail);
+        } else {
+            thumbnail.setVisibility(View.GONE);
+        }
     }
 
-    private void checkNextButton(){
-        if (steps.size() - 1 == position){
+    private void checkNextButton() {
+        if (steps.size() - 1 == position) {
             nextButton.setEnabled(false);
-        }else{
+        } else {
             nextButton.setEnabled(true);
         }
     }
 
-    private void checkPreviousButton(){
-        if (0 == position){
+    private void checkPreviousButton() {
+        if (0 == position) {
             previousButton.setEnabled(false);
-        }else{
+        } else {
             previousButton.setEnabled(true);
         }
     }
@@ -194,6 +210,60 @@ public class DetailsActivity extends BaseActivity {
                 simpleExoPlayerView.hideController();
             }
         });
+
+        player.addListener(new Player.EventListener() {
+            @Override
+            public void onTimelineChanged(Timeline timeline, Object manifest) {
+
+            }
+
+            @Override
+            public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+
+            }
+
+            @Override
+            public void onLoadingChanged(boolean isLoading) {
+
+            }
+
+            @Override
+            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+                if (playbackState == Player.STATE_READY) {
+                    thumbnail.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onRepeatModeChanged(int repeatMode) {
+
+            }
+
+            @Override
+            public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
+
+            }
+
+            @Override
+            public void onPlayerError(ExoPlaybackException error) {
+
+            }
+
+            @Override
+            public void onPositionDiscontinuity(int reason) {
+
+            }
+
+            @Override
+            public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
+
+            }
+
+            @Override
+            public void onSeekProcessed() {
+
+            }
+        });
     }
 
     private void releasePlayer() {
@@ -210,7 +280,10 @@ public class DetailsActivity extends BaseActivity {
         super.onStart();
         if (Util.SDK_INT > 23) {
             initializePlayer();
-            if (videoPosition != C.TIME_UNSET) player.seekTo(videoPosition);
+            if (videoPosition != C.TIME_UNSET) {
+                player.seekTo(videoPosition);
+                player.setPlayWhenReady(shouldAutoPlay);
+            }
         }
     }
 
@@ -219,7 +292,10 @@ public class DetailsActivity extends BaseActivity {
         super.onResume();
         if ((Util.SDK_INT <= 23 || player == null)) {
             initializePlayer();
-            if (videoPosition != C.TIME_UNSET) player.seekTo(videoPosition);
+            if (videoPosition != C.TIME_UNSET) {
+                player.seekTo(videoPosition);
+                player.setPlayWhenReady(shouldAutoPlay);
+            }
         }
     }
 
@@ -242,8 +318,9 @@ public class DetailsActivity extends BaseActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putLong(SELECTED_POSITION, player.getCurrentPosition());
-        outState.putInt(ARG_POSITION,position);
-        outState.putParcelableArrayList(ARG_STEPS,steps);
+        outState.putInt(ARG_POSITION, position);
+        outState.putParcelableArrayList(ARG_STEPS, steps);
+        outState.putBoolean(ARG_PLAY_WHEN_READY, player.getPlayWhenReady());
         super.onSaveInstanceState(outState);
     }
 
@@ -251,7 +328,11 @@ public class DetailsActivity extends BaseActivity {
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         videoPosition = savedInstanceState.getLong(SELECTED_POSITION);
-        if (player != null) player.seekTo(videoPosition);
+        shouldAutoPlay = savedInstanceState.getBoolean(ARG_PLAY_WHEN_READY);
+        if (videoPosition != C.TIME_UNSET) {
+            player.seekTo(videoPosition);
+            player.setPlayWhenReady(shouldAutoPlay);
+        }
     }
 
     @Override

@@ -30,12 +30,12 @@ public class RecipeIngredientsAdapter extends RecyclerView.Adapter<RecipeIngredi
     private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            int position =  (int) view.getTag();
+            int position = (int) view.getTag();
             ArrayList<StepsItem> argumentList = new ArrayList<>(recipe.getSteps());
 
             //play video
             if (mTwoPane) {
-                DetailsFragment fragment = DetailsFragment.newInstance(argumentList,position);
+                DetailsFragment fragment = DetailsFragment.newInstance(argumentList, position);
                 mParentActivity.getSupportFragmentManager().beginTransaction()
                         .replace(R.id.step_details_container, fragment)
                         .commit();
@@ -43,14 +43,14 @@ public class RecipeIngredientsAdapter extends RecyclerView.Adapter<RecipeIngredi
                 Context context = view.getContext();
                 Intent intent = new Intent(context, DetailsActivity.class);
 
-                intent.putParcelableArrayListExtra(DetailsActivity.ARG_STEPS,argumentList);
+                intent.putParcelableArrayListExtra(DetailsActivity.ARG_STEPS, argumentList);
                 intent.putExtra(DetailsActivity.ARG_POSITION, position);
                 mParentActivity.startActivity(intent);
             }
         }
     };
 
-    public RecipeIngredientsAdapter(BaseActivity parentActivity,Recipe item, boolean twoPane) {
+    public RecipeIngredientsAdapter(BaseActivity parentActivity, Recipe item, boolean twoPane) {
         recipe = item;
         mTwoPane = twoPane;
         mParentActivity = parentActivity;

@@ -4,11 +4,13 @@
     <string name="base_url">https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/</string>
     <string name="loading">Loading</string>
     <string name="wait">Wait while loading…</string>
+    <string name="fail_loading">Loading failed</string>
     <string name="previous">Previous</string>
     <string name="next">Next</string>
     <string name="appwidget_text">Title</string>
     <string name="add_widget">Add widget</string>
     <string name="empty_view_text">Recipe List is Empty</string>
     <string name="content_authority">com.udacity.spyrakis.bakingapp.app</string>
+
 
 </resources>

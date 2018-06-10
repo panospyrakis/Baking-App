@@ -14,8 +14,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        tools:text="@string/empty_view_text"
         android:layout_weight="1"
-        android:gravity="start" />
+        android:gravity="start"
+        tools:text="@string/empty_view_text" />
 
 </LinearLayout>

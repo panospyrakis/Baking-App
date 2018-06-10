@@ -20,9 +20,10 @@ public class GridRemoteViewsFactory implements RemoteViewsService.RemoteViewsFac
     Context mContext;
     Cursor mCursor;
 
-    public  GridRemoteViewsFactory(Context applicationContext, Intent intent){
+    public GridRemoteViewsFactory(Context applicationContext, Intent intent) {
         mContext = applicationContext;
     }
+
     @Override
     public void onCreate() {
 

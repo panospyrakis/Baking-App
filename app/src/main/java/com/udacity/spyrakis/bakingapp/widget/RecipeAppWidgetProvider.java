@@ -62,6 +62,7 @@ public class RecipeAppWidgetProvider extends AppWidgetProvider {
     public void onDisabled(Context context) {
         // Enter relevant functionality for when the last widget is disabled
     }
+
     @Override
     public void onReceive(final Context context, Intent intent) {
         final String action = intent.getAction();

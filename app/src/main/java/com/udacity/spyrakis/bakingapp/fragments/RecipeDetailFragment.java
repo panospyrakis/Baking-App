@@ -44,7 +44,7 @@ public class RecipeDetailFragment extends Fragment {
     public RecipeDetailFragment() {
     }
 
-    public static RecipeDetailFragment newInstance(Recipe item,Boolean twoPane) {
+    public static RecipeDetailFragment newInstance(Recipe item, Boolean twoPane) {
 
         Bundle args = new Bundle();
         args.putParcelable(ARG_ITEM, item);
@@ -84,7 +84,7 @@ public class RecipeDetailFragment extends Fragment {
 
         if (mItem != null) {
             recipeList.setLayoutManager(new LinearLayoutManager(getContext()));
-            recipeList.setAdapter(new RecipeIngredientsAdapter((BaseActivity) getActivity(),mItem,mTwoPane));
+            recipeList.setAdapter(new RecipeIngredientsAdapter((BaseActivity) getActivity(), mItem, mTwoPane));
         }
 
         return rootView;

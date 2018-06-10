@@ -3,15 +3,14 @@ package com.udacity.spyrakis.bakingapp.activities;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.udacity.spyrakis.bakingapp.R;
 import com.udacity.spyrakis.bakingapp.adapters.SimpleRecipeRecyclerViewAdapter;
@@ -60,12 +59,8 @@ public class RecipeListActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_list);
         ButterKnife.bind(this);
-
+        toolbar.setTitle("");
         setSupportActionBar(toolbar);
-
-        if (mTwoPane) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        }
 
         assert recyclerView != null;
         setUpNetworkCalls();
@@ -104,7 +99,7 @@ public class RecipeListActivity extends BaseActivity {
             @Override
             public void onFailure(Call<List<Recipe>> call, Throwable t) {
                 progress.dismiss();
-                Log.d("call fail", "call failed", t);
+                Toast.makeText(getApplicationContext(), R.string.fail_loading, Toast.LENGTH_SHORT).show();
             }
         });
     }

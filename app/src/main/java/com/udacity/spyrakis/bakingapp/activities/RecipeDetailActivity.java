@@ -52,10 +52,10 @@ public class RecipeDetailActivity extends BaseActivity {
                     .commit();
         } else {
             recipe = savedInstanceState.getParcelable(RecipeDetailFragment.ARG_ITEM);
-            RecipeDetailFragment fragment = RecipeDetailFragment.newInstance(recipe, mTwoPane);
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.recipe_detail_list, fragment)
-                    .commit();
+//            RecipeDetailFragment fragment = RecipeDetailFragment.newInstance(recipe, mTwoPane);
+//            getSupportFragmentManager().beginTransaction()
+//                    .replace(R.id.recipe_detail_list, fragment)
+//                    .commit();
         }
         if (recipe != null) {
             getContentResolver().delete(RecipiesContract.RecipeEntry.CONTENT_URI, null, null);

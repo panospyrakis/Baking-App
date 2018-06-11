@@ -145,7 +145,7 @@ public class DetailsActivity extends BaseActivity {
             navContainer.setVisibility(View.GONE);
             recipeInstructions.setVisibility(View.GONE);
             actionBar.hide();
-            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) simpleExoPlayerView.getLayoutParams();
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) simpleExoPlayerView.getLayoutParams();
             FrameLayout.LayoutParams rootParams = (FrameLayout.LayoutParams) root.getLayoutParams();
             params.height = rootParams.height;
             simpleExoPlayerView.setLayoutParams(params);
